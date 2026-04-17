@@ -9,7 +9,7 @@ A serverless pipeline that ingests transaction logs, uses AI to identify fraudul
 - Event-Driven Automation: Reduced remediation time from minutes to milliseconds by automating WAF rule updates via Lambda
   
 # AWS Services Used
-- AWS Bedrock
+- Amazon Bedrock
 - AWS Lambda
 - S3 Bucket
 - DynamoDB

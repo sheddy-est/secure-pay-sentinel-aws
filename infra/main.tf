@@ -28,7 +28,7 @@ resource "aws_sns_topic" "alerts" {
   name = "secure-pay-high-risk-alerts"
 }
 
-# (Optional: Add an email subscription via AWS Console or CLI manually to confirm the endpoint)
+# (Add an email subscription via AWS Console or CLI manually to confirm the endpoint)
 
 # 4. Active Defense: WAFv2 IP Set
 resource "aws_wafv2_ip_set" "blocked_ips" {

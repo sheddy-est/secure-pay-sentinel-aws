@@ -2,7 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# 1. Ingestion Layer: S3 Bucket
 resource "aws_s3_bucket" "transaction_ingest" {
   bucket = "secure-pay-sentinel-ingest-${random_id.suffix.hex}"
 }
@@ -11,7 +10,6 @@ resource "random_id" "suffix" {
   byte_length = 4
 }
 
-# 2. Persistence: DynamoDB Table
 resource "aws_dynamodb_table" "transactions" {
   name           = "SecurePayTransactions"
   billing_mode   = "PAY_PER_REQUEST"
@@ -28,9 +26,7 @@ resource "aws_sns_topic" "alerts" {
   name = "secure-pay-high-risk-alerts"
 }
 
-# (Add an email subscription via AWS Console or CLI manually to confirm the endpoint)
 
-# 4. Active Defense: WAFv2 IP Set
 resource "aws_wafv2_ip_set" "blocked_ips" {
   name               = "SecurePayBlockedIPs"
   scope              = "REGIONAL"
@@ -38,7 +34,6 @@ resource "aws_wafv2_ip_set" "blocked_ips" {
   addresses          = [] # Starts empty
 }
 
-# 5. IAM Role & Least Privilege Policy
 resource "aws_iam_role" "lambda_exec" {
   name = "secure_pay_lambda_role"
   assume_role_policy = jsonencode({
@@ -58,32 +53,32 @@ resource "aws_iam_role_policy" "lambda_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow" # Basic logging
+        Effect = "Allow" 
         Action = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
         Resource = "arn:aws:logs:*:*:*"
       },
       {
-        Effect = "Allow" # S3 Read
+        Effect = "Allow" 
         Action = ["s3:GetObject"]
         Resource = "${aws_s3_bucket.transaction_ingest.arn}/*"
       },
       {
-        Effect = "Allow" # Bedrock Invoke
+        Effect = "Allow" 
         Action = ["bedrock:InvokeModel"]
         Resource = "arn:aws:bedrock:*::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0"
       },
       {
-        Effect = "Allow" # DynamoDB Write
+        Effect = "Allow" 
         Action = ["dynamodb:PutItem"]
         Resource = aws_dynamodb_table.transactions.arn
       },
       {
-        Effect = "Allow" # SNS Publish
+        Effect = "Allow" 
         Action = ["sns:Publish"]
         Resource = aws_sns_topic.alerts.arn
       },
       {
-        Effect = "Allow" # WAF Update
+        Effect = "Allow" 
         Action = ["wafv2:GetIPSet", "wafv2:UpdateIPSet"]
         Resource = aws_wafv2_ip_set.blocked_ips.arn
       }
@@ -91,7 +86,6 @@ resource "aws_iam_role_policy" "lambda_policy" {
   })
 }
 
-# 6. Lambda Function
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir  = "../src"
@@ -117,7 +111,6 @@ resource "aws_lambda_function" "sentinel_processor" {
   }
 }
 
-# 7. S3 Event Trigger for Lambda
 resource "aws_lambda_permission" "allow_s3" {
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"

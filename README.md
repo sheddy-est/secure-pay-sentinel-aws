@@ -16,3 +16,4 @@ A serverless pipeline that ingests transaction logs, uses AI to identify fraudul
 - AWS WAF
 - IAM
 - Amazon SNS
+- Terraform (Open Source IaC)

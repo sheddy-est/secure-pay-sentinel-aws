@@ -21,7 +21,6 @@ resource "aws_dynamodb_table" "transactions" {
   }
 }
 
-# 3. Notification: SNS Topic
 resource "aws_sns_topic" "alerts" {
   name = "secure-pay-high-risk-alerts"
 }
@@ -31,7 +30,7 @@ resource "aws_wafv2_ip_set" "blocked_ips" {
   name               = "SecurePayBlockedIPs"
   scope              = "REGIONAL"
   ip_address_version = "IPV4"
-  addresses          = [] # Starts empty
+  addresses          = [] 
 }
 
 resource "aws_iam_role" "lambda_exec" {

@@ -1,0 +1,19 @@
+{
+  "transaction_id": "txn-low-0001",
+  "timestamp": "2026-04-22T17:05:44Z",
+  "amount": 52.35,
+  "currency": "USD",
+  "source_ip": "203.0.113.18",
+  "user_id": "cust-1240",
+  "merchant_id": "merchant-12",
+  "channel": "web-checkout",
+  "payload": {
+    "request_path": "/payments/authorize",
+    "headers": {
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "203.0.113.18",
+      "x-tls-version": "TLS1.3"
+    },
+    "body": "token=tok_test_abc123&amount=52.35&currency=USD"
+  }
+}

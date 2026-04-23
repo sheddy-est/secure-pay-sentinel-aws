@@ -1,0 +1,20 @@
+{
+  "transaction_id": "txn-high-0001",
+  "timestamp": "2026-04-22T17:01:19Z",
+  "amount": 4999.99,
+  "currency": "USD",
+  "source_ip": "198.51.100.24",
+  "user_id": "cust-7781",
+  "merchant_id": "merchant-91",
+  "channel": "mobile-api",
+  "payload": {
+    "request_path": "/payments/settle?id=781%20OR%201=1%20--",
+    "headers": {
+      "user-agent": "ios-app/12.4.1",
+      "x-forwarded-for": "198.51.100.24",
+      "x-tls-version": "TLS1.0",
+      "x-session-integrity": "certificate-mismatch"
+    },
+    "body": "card_token=tok_live_123&callback=https://secure-pay.verify-session.invalid/replay&note=UNION SELECT account_number FROM cards"
+  }
+}
